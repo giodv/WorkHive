@@ -22,13 +22,11 @@ message GetEventRequest{
 }
 
 message GetEventFilterRequest {
-  int32 skip = 1;
-  int32 take = 2;
-  optional google.protobuf.Timestamp startDateTime = 3;
-  optional google.protobuf.Timestamp endDateTime = 4;
-  optional string location = 5;
-  optional string organizerId = 6;
-  repeated uint32 eventType = 7; 
+  optional google.protobuf.Timestamp startDateTime = 1;
+  optional google.protobuf.Timestamp endDateTime = 2;
+  optional string location = 3;
+  optional string organizerId = 4;
+  repeated uint32 eventType = 5; 
 }
 
 message WHEventReply {
@@ -47,8 +45,8 @@ message CreateEventRequest {
   google.protobuf.Timestamp startDateTime = 1;
   google.protobuf.Timestamp endDateTime = 2;
   string location = 3;
-  optional string organizerId = 4;
-  repeated uint32 eventType = 5; 
+  repeated uint32 eventType = 4; 
+  string description = 5;
 }
 
 message UpdateEventRequest {
@@ -57,6 +55,7 @@ message UpdateEventRequest {
   google.protobuf.Timestamp endDateTime = 3;
   string location = 4;
   repeated uint32 eventType = 5; 
+  string description = 8;
 }
 
 message DeleteEventRequest{
