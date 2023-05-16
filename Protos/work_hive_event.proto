@@ -47,15 +47,17 @@ message CreateEventRequest {
   string location = 3;
   repeated uint32 eventType = 4; 
   string description = 5;
+  optional int32 maxGuest = 6;  
 }
 
 message UpdateEventRequest {
   string id = 1;
-  google.protobuf.Timestamp startDateTime = 2;
-  google.protobuf.Timestamp endDateTime = 3;
-  string location = 4;
+  optional google.protobuf.Timestamp startDateTime = 2;
+  optional google.protobuf.Timestamp endDateTime = 3;
+  optional string location = 4;
   repeated uint32 eventType = 5; 
-  string description = 8;
+  optional string description = 8;
+  optional int32 maxGuest = 6;  
 }
 
 message DeleteEventRequest{
