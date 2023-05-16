@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+
+service WHEvent {
+  rpc CreateEvent (CreateEventRequest) returns (WHEventReply);
+  rpc GetEventStream (GetEventFilterRequest) returns (stream WHEventReply);
+  rpc GetEvent (GetEventRequest) returns (WHEventReply);
+  rpc UpdateEvent (UpdateEventRequest) returns (WHEventReply);
+  rpc DeleteEvent (DeleteEventRequest) returns (google.protobuf.Empty);
+}
+
+enum WHEventType {
+  Work = 0;
+  Fun = 1;
+}
+
+message GetEventRequest{
+  string id = 1;
+}
+
+message GetEventFilterRequest {
+  int32 skip = 1;
+  int32 take = 2;
+  optional google.protobuf.Timestamp startDateTime = 3;
+  optional google.protobuf.Timestamp endDateTime = 4;
+  optional string location = 5;
+  optional string organizerId = 6;
+  repeated uint32 eventType = 7; 
+}
+
+message WHEventReply {
+  string id = 1;
+  string organizerId = 2;
+  google.protobuf.Timestamp startDateTime = 3;
+  google.protobuf.Timestamp endDateTime = 4;
+  string location = 5;
+  optional int32 maxGuest = 6;  
+  string description = 7;
+  repeated uint32 eventType = 8; 
+  repeated string guestIds = 9; 
+}
+
+message CreateEventRequest {
+  google.protobuf.Timestamp startDateTime = 1;
+  google.protobuf.Timestamp endDateTime = 2;
+  string location = 3;
+  optional string organizerId = 4;
+  repeated uint32 eventType = 5; 
+}
+
+message UpdateEventRequest {
+  string id = 1;
+  google.protobuf.Timestamp startDateTime = 2;
+  google.protobuf.Timestamp endDateTime = 3;
+  string location = 4;
+  repeated uint32 eventType = 5; 
+}
+
+message DeleteEventRequest{
+  string id = 1;
+}
