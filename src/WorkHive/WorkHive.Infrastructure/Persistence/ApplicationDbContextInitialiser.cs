@@ -49,18 +49,20 @@ public class ApplicationDbContextInitialiser
         // Seed, if necessary
         if (!_context.WHEvents.Any())
         {
-            _context.WHEvents.Add(new WHEventEntity
+            WHEventEntity entity = new WHEventEntity
             {
                 Id = Guid.NewGuid(),
-                StartDate = DateTime.Now,
+                StartDate = DateTime.Now.AddHours(1),
                 EndDate = DateTime.Now.AddHours(9),
                 Description = "Test",
                 EventType = WHEventType.Work | WHEventType.Fun,
-                GuestIds = new List<WHEventGuestEntity>(),
+                //GuestIds = new List<Guid>(),
                 Location = "Napoli, Via Brombeis",
                 MaxGuest = 12,
                 OrganizerId = Guid.NewGuid()
-            });
+            };
+            entity.GuestIds.Add(Guid.NewGuid());
+            _context.WHEvents.Add(entity);
 
             await _context.SaveChangesAsync();
         }

@@ -32,12 +32,13 @@ public class JoinWHEventCommandHandler : IRequestHandler<JoinWHEventCommand>
 
         if (entity != null)
         {
-            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.GuestIds.Count && !entity.GuestIds.Select(e => e.Id).Contains(request.GuestId))
+            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.GuestIds.Count && !entity.GuestIds.Contains(request.GuestId))
             {
-                entity.GuestIds.Add(new WHEventGuestEntity { Id = request.GuestId });
+                entity.GuestIds.Add(request.GuestId);
             }
         }
-        await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
+        _applicationDbContext.WHEvents.Update(entity);
+        await _applicationDbContext.SaveChangesAsync(cancellationToken);
     }
 }
