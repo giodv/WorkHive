@@ -1,22 +1,43 @@
 ﻿using MediatR;
-using WorkHive.Core;
+using Microsoft.EntityFrameworkCore;
+using WorkHive.Application.Common.Interfaces;
+using WorkHive.Core.Entities;
 
 namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 public record JoinWHEventCommand : IRequest
 {
-    public Guid OrganizerId { get; init; }
-    public DateTime StartDate { get; init; }
-    public DateTime EndDate { get; init; }
-    public string Location { get; init; }
-    public WHEventType[] eventType { get; init; }
-    public string Description { get; init; }
-    public int? MaxGuest { get; init; }
+
+    public JoinWHEventCommand(Guid id, Guid guestId)
+    {
+        Id = id;
+        GuestId = guestId;
+    }
+    public Guid Id { get; init; }
+
+    public Guid GuestId { get; init; }
 }
 
 public class JoinWHEventCommandHandler : IRequestHandler<JoinWHEventCommand>
 {
-    public Task Handle(JoinWHEventCommand request, CancellationToken cancellationToken)
+    private readonly IApplicationDbContext _applicationDbContext;
+
+    public JoinWHEventCommandHandler(IApplicationDbContext applicationDbContext)
     {
-        throw new NotImplementedException();
+        _applicationDbContext = applicationDbContext;
+    }
+
+    public async Task Handle(JoinWHEventCommand request, CancellationToken cancellationToken)
+    {
+        var entity = await _applicationDbContext.WHEvents.SingleAsync(e => e.Id == request.Id);
+
+        if (entity != null)
+        {
+            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.GuestIds.Count && !entity.GuestIds.Select(e => e.Id).Contains(request.GuestId))
+            {
+                entity.GuestIds.Add(new WHEventGuestEntity { Id = request.GuestId });
+            }
+        }
+        await _applicationDbContext.SaveChangesAsync(cancellationToken);
+
     }
 }

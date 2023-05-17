@@ -1,22 +1,35 @@
 ﻿using MediatR;
-using WorkHive.Core;
+using Microsoft.EntityFrameworkCore;
+using WorkHive.Application.Common.Interfaces;
 
 namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 public record DeleteWHEventCommand : IRequest
 {
-    public Guid OrganizerId { get; init; }
-    public DateTime StartDate { get; init; }
-    public DateTime EndDate { get; init; }
-    public string Location { get; init; }
-    public WHEventType[] eventType { get; init; }
-    public string Description { get; init; }
-    public int? MaxGuest { get; init; }
+    public Guid Id { get; init; }
+
+    public DeleteWHEventCommand(Guid id)
+    {
+        Id = id;
+    }
 }
 
 public class DeleteWHEventCommandHandler : IRequestHandler<DeleteWHEventCommand>
 {
-    public Task Handle(DeleteWHEventCommand request, CancellationToken cancellationToken)
+    private readonly IApplicationDbContext _applicationDbContext;
+
+    public DeleteWHEventCommandHandler(IApplicationDbContext applicationDbContext)
     {
-        throw new NotImplementedException();
+        _applicationDbContext = applicationDbContext;
+    }
+
+    public async Task Handle(DeleteWHEventCommand request, CancellationToken cancellationToken)
+    {
+        var entity = await _applicationDbContext.WHEvents.SingleAsync(e => e.Id == request.Id);
+
+        if (entity != null)
+        {
+            _applicationDbContext.WHEvents.Remove(entity);
+        }
+        await _applicationDbContext.SaveChangesAsync(cancellationToken);
     }
 }

@@ -53,6 +53,7 @@ public class CreateWHEventCommandHandler : IRequestHandler<CreateWHEventCommand,
     {
         var entity = await _applicationDbContext.WHEvents.AddAsync(request.ToEntity());
 
+        await _applicationDbContext.SaveChangesAsync(cancellationToken);
         return new WHEventModel(entity.Entity);
     }
 }

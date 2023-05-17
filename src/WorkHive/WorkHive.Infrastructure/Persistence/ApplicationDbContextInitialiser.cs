@@ -56,7 +56,7 @@ public class ApplicationDbContextInitialiser
                 EndDate = DateTime.Now.AddHours(9),
                 Description = "Test",
                 EventType = WHEventType.Work | WHEventType.Fun,
-                GuestIds = new List<Guid>(),
+                GuestIds = new List<WHEventGuestEntity>(),
                 Location = "Napoli, Via Brombeis",
                 MaxGuest = 12,
                 OrganizerId = Guid.NewGuid()
