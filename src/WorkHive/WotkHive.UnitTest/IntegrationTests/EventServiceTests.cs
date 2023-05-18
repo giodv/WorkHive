@@ -4,9 +4,9 @@ using WotkHive.UnitTest.IntegrationTests.Helpers;
 using Xunit.Abstractions;
 
 namespace WotkHive.UnitTest.IntegrationTests;
-public class GreeterServiceTests : IntegrationTestBase
+public class EventServiceTests : IntegrationTestBase
 {
-    public GreeterServiceTests(GrpcTestFixture<Startup> fixture, ITestOutputHelper outputHelper)
+    public EventServiceTests(GrpcTestFixture<Startup> fixture, ITestOutputHelper outputHelper)
         : base(fixture, outputHelper)
     {
     }
