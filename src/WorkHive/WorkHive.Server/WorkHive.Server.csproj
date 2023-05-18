@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -9,7 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<Protobuf Include="Protos\work_hive_event.proto" GrpcServices="Server" />
+    <Compile Remove="Protos\**" />
+    <Content Remove="Protos\**" />
+    <EmbeddedResource Remove="Protos\**" />
+    <None Remove="Protos\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkHive.Common\WorkHive.Common.csproj" />
     <ProjectReference Include="..\WorkHive.Infrastructure\WorkHive.Infrastructure.csproj" />
   </ItemGroup>
-
 </Project>
