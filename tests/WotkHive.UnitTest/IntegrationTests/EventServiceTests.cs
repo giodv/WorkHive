@@ -10,7 +10,6 @@ public class EventServiceTests : IntegrationTestBase
     {
     }
 
-    #region snippet_SayHelloUnaryTest
     [Fact]
     public async void SayHelloUnaryTest()
     {
@@ -23,6 +22,5 @@ public class EventServiceTests : IntegrationTestBase
         // Assert
         Assert.Equal("test", response.Description);
     }
-    #endregion
 
 }

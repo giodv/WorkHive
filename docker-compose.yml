@@ -5,11 +5,10 @@ services:
     image: ${DOCKER_REGISTRY-}workhiveserver
     build:
       context: .
-      dockerfile: WorkHive.Server/Dockerfile
-    depends_on:
-      - "postgres_image"
+      dockerfile: src/WorkHive.Server/Dockerfile
     networks:
-       - mynetwork
+        - mynetwork
+
   postgres_image:
       image: postgres:latest
       ports:
@@ -40,3 +39,4 @@ volumes:
 networks:
   mynetwork:
      driver: bridge
+

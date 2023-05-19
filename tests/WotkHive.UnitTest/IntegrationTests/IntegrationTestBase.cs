@@ -1,6 +1,5 @@
 ﻿using Grpc.Net.Client;
 using Microsoft.Extensions.Logging;
-using WorkHive.Server;
 using WotkHive.UnitTest.IntegrationTests.Helpers;
 using Xunit.Abstractions;
 

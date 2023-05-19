@@ -7,10 +7,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["WorkHive.Server/WorkHive.Server.csproj", "WorkHive.Server/"]
-RUN dotnet restore "WorkHive.Server/WorkHive.Server.csproj"
+COPY ["src/WorkHive.Server/WorkHive.Server.csproj", "src/WorkHive.Server/"]
+COPY ["src/WorkHive.Infrastructure/WorkHive.Infrastructure.csproj", "src/WorkHive.Infrastructure/"]
+COPY ["src/WorkHive.Application/WorkHive.Application.csproj", "src/WorkHive.Application/"]
+COPY ["src/WorkHive.Domain/WorkHive.Domain.csproj", "src/WorkHive.Domain/"]
+RUN dotnet restore "src/WorkHive.Server/WorkHive.Server.csproj"
 COPY . .
-WORKDIR "/src/WorkHive.Server"
+WORKDIR "/src/src/WorkHive.Server"
 RUN dotnet build "WorkHive.Server.csproj" -c Release -o /app/build
 
 FROM build AS publish
