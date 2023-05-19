@@ -15,6 +15,8 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
 
     public DbSet<WHEventEntity> WHEvents => Set<WHEventEntity>();
+    public DbSet<WHUser> WhUsers => Set<WHUser>();
+    public DbSet<WHCompany> WhCompanies => Set<WHCompany>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

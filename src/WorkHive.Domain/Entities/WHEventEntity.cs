@@ -14,5 +14,9 @@ public class WHEventEntity
     public int? MaxGuest { get; set; }
 
     public List<Guid> GuestIds { get; set; } = new();
+    /// <summary>
+    /// Tags the user can set like wifi/smoking area/...
+    /// </summary>
+    public string Attributes { get; set; }
 
 }
