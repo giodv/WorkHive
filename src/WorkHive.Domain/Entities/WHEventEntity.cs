@@ -1,4 +1,6 @@
-﻿namespace WorkHive.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WorkHive.Domain.Entities;
 public class WHEventEntity
 {
     [Key]
