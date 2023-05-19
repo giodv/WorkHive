@@ -1,4 +1,4 @@
-﻿namespace WorkHive.Core;
+﻿namespace WorkHive.Domain;
 
 [Flags]
 public enum WHEventType

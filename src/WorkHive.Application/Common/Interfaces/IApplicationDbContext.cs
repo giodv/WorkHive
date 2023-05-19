@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WorkHive.Core.Entities;
+using WorkHive.Domain.Entities;
 
 namespace WorkHive.Application.Common.Interfaces;
 

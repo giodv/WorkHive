@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WorkHive.Application.Common.Interfaces;
-using WorkHive.Core.Entities;
 
 namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 public record JoinWHEventCommand : IRequest

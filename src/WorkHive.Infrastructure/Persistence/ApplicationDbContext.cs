@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 using WorkHive.Application.Common.Interfaces;
-using WorkHive.Core.Entities;
+using WorkHive.Domain.Entities;
 
 namespace WorkHive.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDbContext

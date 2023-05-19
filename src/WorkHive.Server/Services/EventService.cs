@@ -4,7 +4,7 @@ using MediatR;
 using WorkHive.Application.WHEvents;
 using WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 using WorkHive.Application.WHEvents.Queries.GetWHEventById;
-using WorkHive.Core;
+using WorkHive.Domain;
 using WorkHive.Server.Helper;
 
 namespace WorkHive.Server.Services;

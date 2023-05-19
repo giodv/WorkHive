@@ -1,4 +1,4 @@
-﻿namespace WorkHive.Core.Entities;
+﻿namespace WorkHive.Domain.Entities;
 
 internal class KeyAttribute : Attribute
 {

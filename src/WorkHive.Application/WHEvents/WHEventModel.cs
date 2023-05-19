@@ -1,5 +1,4 @@
-﻿using WorkHive.Core;
-using WorkHive.Core.Entities;
+﻿using WorkHive.Domain.Entities;
 
 namespace WorkHive.Application.WHEvents;
 public record WHEventModel(Guid Id, Guid OrganizerId, DateTime StartDate, DateTime EndDate, string Location, int EventType, string Description, int? MaxGuest, IList<Guid> GuestIds)

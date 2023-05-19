@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using WorkHive.Application.Common.Interfaces;
-using WorkHive.Core;
-using WorkHive.Core.Entities;
+using WorkHive.Domain;
+using WorkHive.Domain.Entities;
 
 namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 public record CreateWHEventCommand : IRequest<WHEventModel>

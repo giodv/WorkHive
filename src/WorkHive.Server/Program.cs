@@ -1,3 +1,4 @@
+using WorkHive.Infrastructure;
 using WorkHive.Infrastructure.Persistence;
 using WorkHive.Server.Services;
 

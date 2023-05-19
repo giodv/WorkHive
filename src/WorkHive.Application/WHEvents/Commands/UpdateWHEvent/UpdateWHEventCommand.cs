@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using WorkHive.Core;
+using WorkHive.Domain;
 
 namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 public record UpdateWHEventCommand : IRequest<WHEventModel>
