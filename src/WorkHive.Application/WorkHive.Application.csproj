@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WorkHive.Core\WorkHive.Core.csproj" />
+    <ProjectReference Include="..\WorkHive.Domain\WorkHive.Domain.csproj" />
   </ItemGroup>
 
 </Project>

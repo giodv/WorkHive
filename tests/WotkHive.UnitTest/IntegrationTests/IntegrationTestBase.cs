@@ -5,12 +5,12 @@ using WotkHive.UnitTest.IntegrationTests.Helpers;
 using Xunit.Abstractions;
 
 namespace WotkHive.UnitTest.IntegrationTests;
-public class IntegrationTestBase : IClassFixture<GrpcTestFixture<Startup>>, IDisposable
+public class IntegrationTestBase : IClassFixture<GrpcTestFixture<Program>>, IDisposable
 {
     private GrpcChannel? _channel;
     private IDisposable? _testContext;
 
-    protected GrpcTestFixture<Startup> Fixture { get; set; }
+    protected GrpcTestFixture<Program> Fixture { get; set; }
 
     protected ILoggerFactory LoggerFactory => Fixture.LoggerFactory;
 
@@ -21,11 +21,11 @@ public class IntegrationTestBase : IClassFixture<GrpcTestFixture<Startup>>, IDis
         return GrpcChannel.ForAddress("http://localhost", new GrpcChannelOptions
         {
             LoggerFactory = LoggerFactory,
-            HttpHandler = Fixture.Handler
+            HttpHandler = Fixture.AppFactory.Server.CreateHandler()
         });
     }
 
-    public IntegrationTestBase(GrpcTestFixture<Startup> fixture, ITestOutputHelper outputHelper)
+    public IntegrationTestBase(GrpcTestFixture<Program> fixture, ITestOutputHelper outputHelper)
     {
         Fixture = fixture;
         _testContext = Fixture.GetTestContext(outputHelper);

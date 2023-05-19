@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>e54d7ac6-50c2-4936-89ed-4794adfeff38</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Protos\**" />
+		<Content Remove="Protos\**" />
+		<EmbeddedResource Remove="Protos\**" />
+		<None Remove="Protos\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="..\Proto\work_hive_event.proto" Link="Proto\work_hive_event.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\WorkHive.Infrastructure\WorkHive.Infrastructure.csproj" />
+	</ItemGroup>
+</Project>

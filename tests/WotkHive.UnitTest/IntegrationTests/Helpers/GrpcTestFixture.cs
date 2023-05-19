@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +15,7 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
     private IHost? _host;
     private HttpMessageHandler? _handler;
     private Action<IWebHostBuilder>? _configureWebHost;
+    private WebApplicationFactory<Program> _appFactory;
 
     public event LogMessage? LoggedMessage;
 
@@ -24,6 +26,17 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
         {
             LoggedMessage?.Invoke(logLevel, category, eventId, message, exception);
         }));
+
+        _appFactory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    services.AddSingleton<ILoggerFactory>(LoggerFactory);
+                });
+            });
+
+
     }
 
     public void ConfigureWebHost(Action<IWebHostBuilder> configure)
@@ -54,7 +67,10 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
         }
     }
 
+
     public LoggerFactory LoggerFactory { get; }
+
+    public WebApplicationFactory<Program> AppFactory => _appFactory;
 
     public HttpMessageHandler Handler
     {
