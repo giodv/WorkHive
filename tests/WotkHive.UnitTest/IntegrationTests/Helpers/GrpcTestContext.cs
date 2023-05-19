@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace WotkHive.UnitTest.IntegrationTests.Helpers;
+namespace WotkHive.Tests.IntegrationTests.Helpers;
 internal class GrpcTestContext<TStartup> : IDisposable where TStartup : class
 {
     private readonly Stopwatch _stopwatch;

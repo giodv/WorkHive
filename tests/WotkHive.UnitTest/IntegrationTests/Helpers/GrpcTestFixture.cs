@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WotkHive.UnitTest.IntegrationTests.Helpers;
 using Xunit.Abstractions;
 
-namespace WotkHive.UnitTest.IntegrationTests.Helpers;
+namespace WotkHive.Tests.IntegrationTests.Helpers;
 public delegate void LogMessage(LogLevel logLevel, string categoryName, EventId eventId, string message, Exception? exception);
 
 public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class

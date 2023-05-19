@@ -1,8 +1,10 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using WotkHive.Tests.IntegrationTests.Helpers;
+using WotkHive.UnitTest.IntegrationTests;
 using WotkHive.UnitTest.IntegrationTests.Helpers;
 using Xunit.Abstractions;
 
-namespace WotkHive.UnitTest.IntegrationTests;
+namespace WotkHive.Tests.IntegrationTests;
 public class EventServiceTests : IntegrationTestBase
 {
     public EventServiceTests(GrpcTestFixture<Program> fixture, ITestOutputHelper outputHelper)

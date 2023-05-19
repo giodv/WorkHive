@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkHive.Application", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkHive.Domain", "src\WorkHive.Domain\WorkHive.Domain.csproj", "{64920527-EF6B-4D9C-B23F-56EC914750E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WotkHive.UnitTest", "tests\WotkHive.UnitTest\WotkHive.UnitTest.csproj", "{CD21D8BA-3B46-4913-8333-25DBDE73BA90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WotkHive.Tests", "tests\WotkHive.UnitTest\WotkHive.Tests.csproj", "{CD21D8BA-3B46-4913-8333-25DBDE73BA90}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{62D33FB6-A4D3-4138-A911-E726858262FC}"
 EndProject

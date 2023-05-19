@@ -1,5 +1,6 @@
 ﻿using Grpc.Net.Client;
 using Microsoft.Extensions.Logging;
+using WotkHive.Tests.IntegrationTests.Helpers;
 using WotkHive.UnitTest.IntegrationTests.Helpers;
 using Xunit.Abstractions;
 

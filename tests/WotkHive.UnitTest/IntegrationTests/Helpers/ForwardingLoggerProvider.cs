@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using WotkHive.Tests.IntegrationTests.Helpers;
 
 namespace WotkHive.UnitTest.IntegrationTests.Helpers;
 internal class ForwardingLoggerProvider : ILoggerProvider
