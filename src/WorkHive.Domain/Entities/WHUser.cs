@@ -2,9 +2,8 @@
 
 namespace WorkHive.Domain.Entities;
 
-public class WHUser
+public class WHUser: WHEntityBase
 {
-    [Key] public Guid Id { get; set; }
     public Guid CompanyId { get; set; }
     public WHCompany WhCompany { get; set; }
 }

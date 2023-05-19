@@ -2,9 +2,7 @@
 
 namespace WorkHive.Domain.Entities;
 
-public class WHCompany
+public class WHCompany: WHEntityBase
 {
-    [Key] 
-    public Guid Id { get; set; }
     public string Name { get; set; }
 }
