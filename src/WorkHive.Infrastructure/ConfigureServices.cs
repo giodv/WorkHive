@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 using WorkHive.Application.Common.Interfaces;
 using WorkHive.Infrastructure.Persistence;
 
@@ -7,16 +7,22 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddDbContext<ApplicationDbContext>(options =>
-        //    options.UseInMemoryDatabase("CleanArchitectureDb"));
-
-        services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseNpgsql("User ID=bloguser;Password=bloguser;Host=postgres_image;Port=5432;Database=blogdb;Pooling=true;"));
+        if (configuration.GetValue<bool>("UseInMemoryDatabase"))
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseInMemoryDatabase("WorkHiveInMemoryDb"));
+        }
+        else
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        }
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
         return services;
     }
+
 }
