@@ -1,17 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WorkHive.Application.Common.Interfaces;
 using WorkHive.Domain.Entities;
+using WorkHive.Domain.Log;
 
 namespace WorkHive.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
+    private readonly ILogger<ApplicationDbContext> _logger;
 
     public ApplicationDbContext(
+        ILogger<ApplicationDbContext> logger,
        DbContextOptions<ApplicationDbContext> options)
        : base(options)
     {
+        _logger = logger;
     }
 
     public DbSet<WHEvent> WHEvents => Set<WHEvent>();
@@ -42,6 +47,14 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return await base.SaveChangesAsync(cancellationToken);
+        try
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.ErrorWhileSavingChanges(ex);
+            throw;
+        }
     }
 }

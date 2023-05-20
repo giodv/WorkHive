@@ -22,6 +22,7 @@ public class EventService : WHEvent.WHEventBase
     public override async Task<WHEventReply> CreateEvent(CreateEventRequest request, ServerCallContext context)
     {
         // TODO: Get The organizer ID from the auth token
+        _logger.LogError("Somethign went wrong");
         WHEventModel response = await _mediator.Send(new CreateWHEventCommand(Guid.NewGuid(), request.StartDateTime.ToDateTime(), request.EndDateTime.ToDateTime(), request.Location, (WHEventType)request.EventType, request.Description, request.MaxGuest));
         return WHEventReplyExtension.CreateFromModel(response);
     }

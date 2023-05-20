@@ -32,7 +32,7 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
         _appFactory = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
-                builder.UseEnvironment("Development");
+                builder.UseEnvironment("IntegrationTest");
                 builder.ConfigureServices(services =>
                 {
                     services.AddSingleton<ILoggerFactory>(LoggerFactory);

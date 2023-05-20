@@ -36,7 +36,8 @@ public record CreateWHEventCommand : IRequest<WHEventModel>
             Description = Description,
             EventAttributes = EventType,
             MaxGuest = MaxGuest,
-            Location = Location
+            Location = Location,
+            LocationAttributes = new()
         };
     }
 }
