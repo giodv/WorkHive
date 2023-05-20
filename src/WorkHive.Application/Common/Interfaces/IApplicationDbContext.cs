@@ -5,7 +5,7 @@ namespace WorkHive.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
-    DbSet<WHEventEntity> WHEvents { get; }
+    DbSet<WHEvent> WHEvents { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

@@ -26,9 +26,9 @@ public record CreateWHEventCommand : IRequest<WHEventModel>
     public string Description { get; init; }
     public int? MaxGuest { get; init; }
 
-    public WHEventEntity ToEntity()
+    public WHEvent ToEntity()
     {
-        return new WHEventEntity
+        return new WHEvent
         {
             OrganizerId = OrganizerId,
             StartDate = StartDate,

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace WorkHive.Domain.Entities;
-public class WHEventEntity: WHEntityBase
+public class WHEvent: WHEntityBase
 {
     public Guid OrganizerId { get; set; }
     public DateTime StartDate { get; set; }

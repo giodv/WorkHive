@@ -14,13 +14,13 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
     }
 
-    public DbSet<WHEventEntity> WHEvents => Set<WHEventEntity>();
+    public DbSet<WHEvent> WHEvents => Set<WHEvent>();
     public DbSet<WHUser> WhUsers => Set<WHUser>();
     public DbSet<WHCompany> WhCompanies => Set<WHCompany>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<WHEventEntity>()
+        builder.Entity<WHEvent>()
                 .Property(x => x.GuestIds)
                 .HasConversion(new ValueConverter<List<Guid>, string>(
                     v => JsonConvert.SerializeObject(v), // Convert to string for persistence

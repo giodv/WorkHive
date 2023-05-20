@@ -22,7 +22,7 @@ namespace WorkHive.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WorkHive.Core.Entities.WHEventEntity", b =>
+            modelBuilder.Entity("WorkHive.Core.Entities.WHEvent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
