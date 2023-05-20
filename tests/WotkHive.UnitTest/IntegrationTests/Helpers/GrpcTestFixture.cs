@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -31,6 +32,7 @@ public class GrpcTestFixture<TStartup> : IDisposable where TStartup : class
         _appFactory = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
+                builder.UseEnvironment("Development");
                 builder.ConfigureServices(services =>
                 {
                     services.AddSingleton<ILoggerFactory>(LoggerFactory);
