@@ -2,10 +2,11 @@
 
 public class WHUser : WHEntityBase
 {
-    public Guid CompanyId { get; set; }
+    public Guid WhCompanyId { get; set; }
     public WHCompany WhCompany { get; set; }
 
     public virtual ICollection<WHEvent> GuestEvents { get; set; }
 
     public virtual ICollection<WHEvent> OwnerEvents { get; set; }
+
 }

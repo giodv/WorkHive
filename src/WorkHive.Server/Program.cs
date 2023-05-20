@@ -16,6 +16,13 @@ builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+    await initialiser.InitialiseAsync();
+    await initialiser.SeedAsync();
+}
+
 // Configure the HTTP request pipeline.
 app.MapGrpcService<EventService>();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
@@ -25,7 +32,6 @@ app.UseHttpMetrics(options =>
 {
     options.AddCustomLabel("host", context => context.Request.Host.Host);
 });
-MigrationsManager.RunMigrations(app.Services, app.Configuration);
 
 app.Run();
 

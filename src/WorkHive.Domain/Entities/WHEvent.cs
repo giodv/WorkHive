@@ -3,8 +3,8 @@ public class WHEvent : WHEntityBase
 {
     public Guid OwnerId { get; set; }
     public WHUser Owner { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    public DateTimeOffset StartDate { get; set; }
+    public DateTimeOffset EndDate { get; set; }
     public string Location { get; set; }
     public WHEventType EventAttributes { get; set; }
     public string Description { get; set; }

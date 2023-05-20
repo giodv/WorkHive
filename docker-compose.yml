@@ -26,9 +26,9 @@ services:
         - db_volume:/var/lib/postgresql/data
         - ./dbscripts/seed.sql :/docker-entrypoint-initdb.d/seed.sql
       environment:
-        POSTGRES_USER: "bloguser"
-        POSTGRES_PASSWORD: "bloguser"
-        POSTGRES_DB: "blogdb"
+        POSTGRES_USER: "whUser"
+        POSTGRES_PASSWORD: "whPostPx"
+        POSTGRES_DB: "workhivedb"
 
   pgadmin:
     container_name: pgadmin4_container
@@ -39,6 +39,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
 
   grafana:
     container_name: grafana_grafprom
