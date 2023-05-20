@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace WorkHive.Domain.Entities;
-public class WHEvent: WHEntityBase
+public class WHEvent : WHEntityBase
 {
     public Guid OrganizerId { get; set; }
     public DateTime StartDate { get; set; }
@@ -11,10 +11,9 @@ public class WHEvent: WHEntityBase
     public string Description { get; set; }
     public int? MaxGuest { get; set; }
 
-    public List<Guid> GuestIds { get; set; } = new();
+    public virtual ICollection<WHUser> GuestIds { get; set; }
     /// <summary>
     /// Tags the user can set like wifi/smoking area/...
     /// </summary>
-    public string Attributes { get; set; }
-
+    public List<string> Attributes { get; set; }
 }

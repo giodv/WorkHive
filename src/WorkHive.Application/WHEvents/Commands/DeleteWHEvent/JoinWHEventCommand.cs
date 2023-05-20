@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using WorkHive.Application.Common.Interfaces;
+using WorkHive.Domain.Entities;
 
 namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 public record JoinWHEventCommand : IRequest
@@ -31,9 +32,9 @@ public class JoinWHEventCommandHandler : IRequestHandler<JoinWHEventCommand>
 
         if (entity != null)
         {
-            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.GuestIds.Count && !entity.GuestIds.Contains(request.GuestId))
+            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.GuestIds.Count && !entity.GuestIds.Select(x => x.Id).Contains(request.GuestId))
             {
-                entity.GuestIds.Add(request.GuestId);
+                entity.GuestIds.Add(new WHUser { Id = request.GuestId });
             }
         }
 

@@ -25,6 +25,15 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 .HasConversion(new ValueConverter<List<Guid>, string>(
                     v => JsonConvert.SerializeObject(v), // Convert to string for persistence
                     v => JsonConvert.DeserializeObject<List<Guid>>(v))); // Convert to List<String> for use
+
+        builder.Entity<WHEvent>()
+                .Property(x => x.Attributes)
+                .HasConversion(new ValueConverter<List<string>, string>(
+                    v => JsonConvert.SerializeObject(v), // Convert to string for persistence
+                    v => JsonConvert.DeserializeObject<List<string>>(v))); // Convert to List<String> for use
+
+        builder.Entity<WHEvent>().HasMany(k => k.GuestIds).WithMany(x => x.GuestEvents);
+
         base.OnModelCreating(builder);
     }
 
