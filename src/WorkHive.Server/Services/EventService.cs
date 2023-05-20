@@ -29,7 +29,7 @@ public class EventService : WHEvent.WHEventBase
 
     public override async Task<WHEventReply> GetEvent(GetEventRequest request, ServerCallContext context)
     {
-        WHEventModel response = await _mediator.Send(new GetWHEventByIdQuery(Guid.Parse(request.Id)));
+        var response = await _mediator.Send(new GetWHEventByIdQuery(Guid.Parse(request.Id)));
         return WHEventReplyExtension.CreateFromModel(response);
     }
 
@@ -39,6 +39,7 @@ public class EventService : WHEvent.WHEventBase
         {
             await responseStream.WriteAsync(WHEventReplyExtension.CreateFromModel(el));
         }
+
     }
 
     public override async Task<Empty> DeleteEvent(DeleteEventRequest request, ServerCallContext context)
@@ -46,13 +47,15 @@ public class EventService : WHEvent.WHEventBase
         await _mediator.Send(new DeleteWHEventCommand(Guid.Parse(request.Id)));
 
         return new Empty();
+
     }
 
     public override async Task<Empty> JoinEvent(JoinEventRequest request, ServerCallContext context)
     {
-        // TODO: Get The guest ID from the auth token
+        //TODO: Get The guest ID from the auth token
         await _mediator.Send(new JoinWHEventCommand(Guid.Parse(request.Id), Guid.NewGuid()));
 
         return new Empty();
+
     }
 }
