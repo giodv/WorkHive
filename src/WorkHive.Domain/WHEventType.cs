@@ -7,5 +7,6 @@ public enum WHEventType
     Work = 1,
     Fun = 2,
     Online = 4,
+    Babysitting = 8,
     WorkAndFun = Work | Fun
 }

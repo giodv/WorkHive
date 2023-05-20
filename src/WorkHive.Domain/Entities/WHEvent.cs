@@ -1,19 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WorkHive.Domain.Entities;
+﻿namespace WorkHive.Domain.Entities;
 public class WHEvent : WHEntityBase
 {
-    public Guid OrganizerId { get; set; }
+    public Guid OwnerId { get; set; }
+    public WHUser Owner { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public string Location { get; set; }
-    public WHEventType EventType { get; set; }
+    public WHEventType EventAttributes { get; set; }
     public string Description { get; set; }
     public int? MaxGuest { get; set; }
 
-    public virtual ICollection<WHUser> GuestIds { get; set; }
+    public virtual ICollection<WHUser> Guests { get; set; }
+
     /// <summary>
     /// Tags the user can set like wifi/smoking area/...
     /// </summary>
-    public List<string> Attributes { get; set; }
+    public List<string> LocationAttributes { get; set; }
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WorkHive.Domain.Entities;
+﻿namespace WorkHive.Domain.Entities;
 
 public class WHUser : WHEntityBase
 {
@@ -8,4 +6,6 @@ public class WHUser : WHEntityBase
     public WHCompany WhCompany { get; set; }
 
     public virtual ICollection<WHEvent> GuestEvents { get; set; }
+
+    public virtual ICollection<WHEvent> OwnerEvents { get; set; }
 }

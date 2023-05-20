@@ -30,11 +30,11 @@ public record CreateWHEventCommand : IRequest<WHEventModel>
     {
         return new WHEvent
         {
-            OrganizerId = OrganizerId,
+            OwnerId = OrganizerId,
             StartDate = StartDate,
             EndDate = EndDate,
             Description = Description,
-            EventType = EventType,
+            EventAttributes = EventType,
             MaxGuest = MaxGuest,
             Location = Location
         };

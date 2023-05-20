@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WorkHive.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using WorkHive.Infrastructure.Persistence;
 namespace WorkHive.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230520091618_AddedMainEntities")]
+    partial class AddedMainEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,7 +97,7 @@ namespace WorkHive.Infrastructure.Migrations
                     b.Property<int?>("MaxGuest")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<Guid>("OrganizerId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("StartDate")
@@ -104,8 +107,6 @@ namespace WorkHive.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("WHEvents");
                 });
@@ -153,17 +154,6 @@ namespace WorkHive.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WorkHive.Domain.Entities.WHEvent", b =>
-                {
-                    b.HasOne("WorkHive.Domain.Entities.WHUser", "Owner")
-                        .WithMany("OwnerEvents")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
             modelBuilder.Entity("WorkHive.Domain.Entities.WHUser", b =>
                 {
                     b.HasOne("WorkHive.Domain.Entities.WHCompany", "WhCompany")
@@ -173,11 +163,6 @@ namespace WorkHive.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("WhCompany");
-                });
-
-            modelBuilder.Entity("WorkHive.Domain.Entities.WHUser", b =>
-                {
-                    b.Navigation("OwnerEvents");
                 });
 #pragma warning restore 612, 618
         }

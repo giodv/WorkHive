@@ -32,9 +32,9 @@ public class JoinWHEventCommandHandler : IRequestHandler<JoinWHEventCommand>
 
         if (entity != null)
         {
-            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.GuestIds.Count && !entity.GuestIds.Select(x => x.Id).Contains(request.GuestId))
+            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.Guests.Count && !entity.Guests.Select(x => x.Id).Contains(request.GuestId))
             {
-                entity.GuestIds.Add(new WHUser { Id = request.GuestId });
+                entity.Guests.Add(new WHUser { Id = request.GuestId });
             }
         }
 

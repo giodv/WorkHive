@@ -21,18 +21,19 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<WHEvent>()
-                .Property(x => x.GuestIds)
-                .HasConversion(new ValueConverter<List<Guid>, string>(
-                    v => JsonConvert.SerializeObject(v), // Convert to string for persistence
-                    v => JsonConvert.DeserializeObject<List<Guid>>(v))); // Convert to List<String> for use
-
-        builder.Entity<WHEvent>()
-                .Property(x => x.Attributes)
+                .Property(x => x.LocationAttributes)
                 .HasConversion(new ValueConverter<List<string>, string>(
                     v => JsonConvert.SerializeObject(v), // Convert to string for persistence
-                    v => JsonConvert.DeserializeObject<List<string>>(v))); // Convert to List<String> for use
+                    v => JsonConvert.DeserializeObject<List<string>>(v) ?? new())); // Convert to List<String> for use
 
-        builder.Entity<WHEvent>().HasMany(k => k.GuestIds).WithMany(x => x.GuestEvents);
+        builder.Entity<WHEvent>()
+            .HasMany(k => k.Guests)
+            .WithMany(x => x.GuestEvents);
+
+        builder.Entity<WHEvent>()
+            .HasOne(k => k.Owner)
+            .WithMany(x => x.OwnerEvents)
+            .HasForeignKey(x => x.OwnerId);
 
         base.OnModelCreating(builder);
     }
