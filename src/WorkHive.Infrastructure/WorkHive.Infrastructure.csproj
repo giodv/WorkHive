@@ -17,4 +17,8 @@
     <ProjectReference Include="..\WorkHive.Application\WorkHive.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
