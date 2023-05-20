@@ -6,8 +6,16 @@ services:
     build:
       context: .
       dockerfile: src/WorkHive.Server/Dockerfile
-    networks:
-        - mynetwork
+    environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:80
+    ports:
+        - 8082:80
+    depends_on:
+        prometheus:
+            condition: service_healthy
+        grafana:
+            condition: service_healthy
 
   postgres_image:
       image: postgres:latest
@@ -21,8 +29,7 @@ services:
         POSTGRES_USER: "bloguser"
         POSTGRES_PASSWORD: "bloguser"
         POSTGRES_DB: "blogdb"
-      networks:
-        - mynetwork
+
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4:latest
@@ -32,11 +39,39 @@ services:
       PGADMIN_DEFAULT_PASSWORD: root
     ports:
       - "5050:80"
-    networks:
-       - mynetwork
+
+  grafana:
+    container_name: grafana_grafprom
+    image: grafana/grafana:master
+    ports:
+      - "3000:3000"
+    volumes:
+        - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+        prometheus:
+            condition: service_healthy
+    healthcheck:
+        test: wget -q --tries=1 -O- http://localhost:3000/
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_grafprom
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    healthcheck:
+        test: wget -q --tries=1 -O- http://localhost:9090/
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+      
 volumes:
   db_volume:
-networks:
-  mynetwork:
-     driver: bridge
-
