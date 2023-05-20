@@ -1,3 +1,6 @@
+using Keycloak.AuthServices.Authentication;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
 using Prometheus;
 using Serilog;
 using Serilog.Exceptions;
@@ -20,6 +23,14 @@ builder.Services.AddGrpc();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
+var authenticationOptions = new KeycloakAuthenticationOptions
+{
+    AuthServerUrl = "http://localhost:8088/",
+    Realm = "Test",
+    Resource = "test-client",
+};
+
+builder.Services.AddKeycloakAuthentication(builder.Configuration, KeycloakAuthenticationOptions.Section);
 
 var app = builder.Build();
 app.Logger.LogError("Something really bad happen");
