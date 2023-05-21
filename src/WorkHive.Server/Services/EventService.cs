@@ -1,9 +1,13 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using MediatR;
+using WorkHive.Application.Common.Exceptions;
 using WorkHive.Application.WHEvents;
 using WorkHive.Application.WHEvents.Commands.CreateWHEvent;
+using WorkHive.Application.WHEvents.Commands.DeleteWHEvent;
+using WorkHive.Application.WHEvents.Commands.JoinWHEvent;
 using WorkHive.Application.WHEvents.Queries.GetWHEventById;
+using WorkHive.Application.WHEvents.Queries.GetWHEventsList;
 using WorkHive.Domain;
 using WorkHive.Server.Helper;
 
@@ -22,9 +26,20 @@ public class EventService : WHEvent.WHEventBase
     public override async Task<WHEventReply> CreateEvent(CreateEventRequest request, ServerCallContext context)
     {
         // TODO: Get The organizer ID from the auth token
-        _logger.LogError("Somethign went wrong");
-        WHEventModel response = await _mediator.Send(new CreateWHEventCommand(Guid.NewGuid(), request.StartDateTime.ToDateTime(), request.EndDateTime.ToDateTime(), request.Location, (WHEventType)request.EventType, request.Description, request.MaxGuest));
-        return WHEventReplyExtension.CreateFromModel(response);
+        try
+        {
+            WHEventModel response = await _mediator.Send(new CreateWHEventCommand(Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95"), request.StartDateTime.ToDateTime(), request.EndDateTime.ToDateTime(), request.Location, (WHEventType)request.EventType, request.Description, request.MaxGuest));
+            return WHEventReplyExtension.CreateFromModel(response);
+
+        }
+        catch (ValidationException ex)
+        {
+            var metadata = new Metadata
+            {
+                { "ErrorMessage", ex.Message }
+            };
+            throw new RpcException(new Status(StatusCode.Internal, "Validation Exception"), metadata);
+        }
     }
 
     public override async Task<WHEventReply> GetEvent(GetEventRequest request, ServerCallContext context)

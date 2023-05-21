@@ -3,6 +3,7 @@ using Serilog;
 using Serilog.Exceptions;
 using Serilog.Sinks.Elasticsearch;
 using System.Reflection;
+using WorkHive.Application;
 using WorkHive.Infrastructure.Persistence;
 using WorkHive.Server.Services;
 
@@ -22,7 +23,6 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();
-app.Logger.LogError("Something really bad happen");
 using (var scope = app.Services.CreateScope())
 {
     var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();

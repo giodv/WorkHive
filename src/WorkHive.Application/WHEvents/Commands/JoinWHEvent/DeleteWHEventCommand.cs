@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WorkHive.Application.Common.Interfaces;
 
-namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
+namespace WorkHive.Application.WHEvents.Commands.JoinWHEvent;
 public record DeleteWHEventCommand : IRequest
 {
     public Guid Id { get; init; }

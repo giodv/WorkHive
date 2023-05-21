@@ -13,13 +13,13 @@ public class EventServiceTests : IntegrationTestBase
     }
 
     [Fact]
-    public async void SayHelloUnaryTest()
+    public async void CreateEventRequest()
     {
         // Arrange
         var client = new WHEvent.WHEventClient(Channel);
 
         // Act
-        var response = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = Timestamp.FromDateTime(DateTime.UtcNow), EndDateTime = Timestamp.FromDateTime(DateTime.UtcNow), Description = "test" });
+        var response = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = Timestamp.FromDateTime(DateTime.UtcNow), EndDateTime = Timestamp.FromDateTime(DateTime.UtcNow.AddHours(1)), Description = "test" });
 
         // Assert
         Assert.Equal("test", response.Description);

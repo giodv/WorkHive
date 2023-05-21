@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using WorkHive.Domain;
 
-namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
+namespace WorkHive.Application.WHEvents.Commands.UpdateWHEvent;
 public record UpdateWHEventCommand : IRequest<WHEventModel>
 {
     public Guid OrganizerId { get; init; }

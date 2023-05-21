@@ -58,31 +58,33 @@ public class ApplicationDbContextInitialiser
     {
         // Default data
         // Seed, if necessary
-        EntityEntry<WHCompany>? company = null;
+        var companyId = Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E94");
 
         if (!_context.WhCompanies.Any())
         {
-            company = _context.WhCompanies.Add(new WHCompany
+            _context.WhCompanies.Add(new WHCompany
             {
+                Id = companyId,
                 Name = "TrimOni Corp"
             });
 
             await _context.SaveChangesAsync();
         }
 
-        EntityEntry<WHUser>? user = null;
+        var userId = Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95");
 
-        if (company != null && !_context.WhUsers.Any())
+        if (!_context.WhUsers.Any())
         {
-            user = _context.WhUsers.Add(new WHUser
+            _context.WhUsers.Add(new WHUser
             {
-                WhCompanyId = company.Entity.Id,
+                Id = userId,
+                WhCompanyId = companyId,
             });
 
             await _context.SaveChangesAsync();
         }
 
-        if (user != null && !_context.WHEvents.Any())
+        if (!_context.WHEvents.Any())
         {
             _context.WHEvents.Add(new WHEvent
             {
@@ -91,7 +93,7 @@ public class ApplicationDbContextInitialiser
                 Location = "Naploli, Via Brombeis",
                 LocationAttributes = new List<string> { "Locale fumatori", "Posteggio moto" },
                 MaxGuest = 12,
-                OwnerId = user.Entity.Id,
+                OwnerId = userId,
                 StartDate = DateTime.Now.AddDays(1),
                 EndDate = DateTime.Now.AddDays(2)
             });

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WorkHive.Application.Common.Interfaces;
 using WorkHive.Domain.Entities;
 
-namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
+namespace WorkHive.Application.WHEvents.Commands.DeleteWHEvent;
 public record JoinWHEventCommand : IRequest
 {
 

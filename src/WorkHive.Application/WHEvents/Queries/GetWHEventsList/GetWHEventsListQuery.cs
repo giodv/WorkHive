@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using WorkHive.Application.Common.Interfaces;
 
-namespace WorkHive.Application.WHEvents.Queries.GetWHEventById;
+namespace WorkHive.Application.WHEvents.Queries.GetWHEventsList;
 public record GetWHEventsListQuery : IRequest<IEnumerable<WHEventModel>>
 {
 }
