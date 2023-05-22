@@ -7,9 +7,9 @@ namespace WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 public record CreateWHEventCommand : IRequest<WHEventModel>
 {
 
-    public CreateWHEventCommand(Guid organizationId, DateTime startDate, DateTime endDate, string location, WHEventType eventType, string description, int? maxGuest)
+    public CreateWHEventCommand(Guid organizerId, DateTime startDate, DateTime endDate, string location, WHEventType eventType, string description, int? maxGuest)
     {
-        OrganizationId = organizationId;
+        OrganizerId = organizerId;
         StartDate = startDate;
         EndDate = endDate;
         Location = location;
@@ -18,7 +18,7 @@ public record CreateWHEventCommand : IRequest<WHEventModel>
         MaxGuest = maxGuest;
     }
 
-    public Guid OrganizationId { get; init; }
+    public Guid OrganizerId { get; init; }
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
     public string Location { get; init; }
@@ -30,7 +30,7 @@ public record CreateWHEventCommand : IRequest<WHEventModel>
     {
         return new WHEvent
         {
-            OwnerId = OrganizationId,
+            OwnerId = OrganizerId,
             StartDate = StartDate,
             EndDate = EndDate,
             Description = Description,
