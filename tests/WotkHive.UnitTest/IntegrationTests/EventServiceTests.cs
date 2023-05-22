@@ -27,7 +27,7 @@ public class EventServiceTests : IntegrationTestBase
 
 
     [Fact]
-    public async void GetEvents()
+    public async void GetEvents1()
     {
         // Arrange
         var client = new WHEvent.WHEventClient(Channel);
@@ -40,5 +40,57 @@ public class EventServiceTests : IntegrationTestBase
         // Assert
         Assert.Equal(2, response.Events.Count());
     }
+
+    [Fact]
+    public async void GetEvents2()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test" });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test" });
+
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { });
+
+        // Assert
+        Assert.Equal(3, response.Events.Count());
+    }
+
+    [Fact]
+    public async void GetEventsWithFilter1()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test" });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test" });
+
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { StartDateTime = DateTime.UtcNow.AddHours(-5).Ticks });
+
+        // Assert
+        Assert.Equal(3, response.Events.Count());
+    }
+
+    [Fact]
+    public async void GetEventsWithFilter2()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test" });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test" });
+
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { StartDateTime = DateTime.UtcNow.Ticks });
+
+        // Assert
+        Assert.Equal(2, response.Events.Count());
+    }
+
 
 }

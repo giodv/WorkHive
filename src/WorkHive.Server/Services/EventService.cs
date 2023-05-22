@@ -50,7 +50,7 @@ public class EventService : WHEvent.WHEventBase
 
     public override async Task GetEventStream(GetEventFilterRequest request, IServerStreamWriter<WHEventReply> responseStream, ServerCallContext context)
     {
-        foreach (var el in await _mediator.Send(new GetWHEventsListQuery()))
+        foreach (var el in await _mediator.Send(new GetWHEventsListQuery(new DateTime(request.StartDateTime, DateTimeKind.Utc))))
         {
             await responseStream.WriteAsync(WHEventReplyExtension.CreateFromModel(el));
         }
@@ -77,7 +77,7 @@ public class EventService : WHEvent.WHEventBase
     public override async Task<WHEventsReply> GetEvents(GetEventFilterRequest request, ServerCallContext context)
     {
         var response = new WHEventsReply();
-        foreach (var el in await _mediator.Send(new GetWHEventsListQuery()))
+        foreach (var el in await _mediator.Send(new GetWHEventsListQuery(new DateTime(request.StartDateTime, DateTimeKind.Utc))))
         {
             response.Events.Add(WHEventReplyExtension.CreateFromModel(el));
         }
