@@ -19,7 +19,7 @@ public class CreateWHEventCommandValidator : AbstractValidator<CreateWHEventComm
 
         RuleFor(v => v.EndDate)
             .NotNull().WithMessage("EndDate is required.")
-            .GreaterThan(v => v.StartDate).WithMessage("EndDate should be greater than StartDate");
+            .GreaterThanOrEqualTo(v => v.StartDate).WithMessage("EndDate should be greater than StartDate");
 
         RuleFor(v => v.OrganizerId)
             .NotNull().NotEmpty().WithMessage("OrganizerId is required.")
