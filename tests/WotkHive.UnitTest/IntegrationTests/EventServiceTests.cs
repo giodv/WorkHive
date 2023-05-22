@@ -180,5 +180,36 @@ public class EventServiceTests : IntegrationTestBase
         response.Events.Should().HaveCount(4);
     }
 
+    [Fact]
+    public async void UpdateEvent1()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+        var newEvent = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Fun });
+
+        var response = await client.UpdateEventAsync(new UpdateEventRequest { Id = newEvent.Id, Description = "updatedDesc" });
+
+        // Assert
+        response.Description.Should().Be("updatedDesc");
+    }
+
+    [Fact]
+    public async void UpdateEvent2()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+        var newEvent = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Fun });
+
+        var response = await client.UpdateEventAsync(new UpdateEventRequest { Id = newEvent.Id, Description = "updatedDesc2", EventType = (int)WHEventType.Babysitting });
+
+        // Assert
+        response.Description.Should().Be("updatedDesc2");
+        response.EventType.Should().Be((int)WHEventType.Babysitting);
+
+    }
 
 }

@@ -6,6 +6,7 @@ using WorkHive.Application.WHEvents;
 using WorkHive.Application.WHEvents.Commands.CreateWHEvent;
 using WorkHive.Application.WHEvents.Commands.DeleteWHEvent;
 using WorkHive.Application.WHEvents.Commands.JoinWHEvent;
+using WorkHive.Application.WHEvents.Commands.UpdateWHEvent;
 using WorkHive.Application.WHEvents.Queries.GetWHEventById;
 using WorkHive.Application.WHEvents.Queries.GetWHEventsList;
 using WorkHive.Domain;
@@ -99,6 +100,24 @@ public class EventService : WHEvent.WHEventBase
 
         return response;
 
+    }
+
+    public override async Task<WHEventReply> UpdateEvent(UpdateEventRequest request, ServerCallContext context)
+    {
+        UpdateWHEventCommand requestCommand = new UpdateWHEventCommand(Guid.Parse(request.Id))
+        {
+            Description = request.HasDescription ? request.Description : null,
+            Location = request.HasLocation ? request.Location : null,
+            StartDate = request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : null,
+            EndDate = request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : null,
+            EventType = request.EventType != 0 ? (WHEventType)request.EventType : null,
+            MaxGuest = request.HasMaxGuest ? request.MaxGuest : null,
+        };
+
+
+        var response = await _mediator.Send(requestCommand);
+
+        return WHEventReplyExtension.CreateFromModel(response);
     }
 
 }
