@@ -109,6 +109,24 @@ public class EventServiceTests : IntegrationTestBase
         Assert.Equal(1, response.Events.Count());
     }
 
+    [Fact]
+    public async void GetEventsWithFilter4()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test" });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test" });
+
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { Location = "Nap" });
+
+        // Assert
+        Assert.Equal(1, response.Events.Count());
+    }
+
+
 
 
 }

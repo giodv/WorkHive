@@ -51,8 +51,9 @@ public class EventService : WHEvent.WHEventBase
     public override async Task GetEventStream(GetEventFilterRequest request, IServerStreamWriter<WHEventReply> responseStream, ServerCallContext context)
     {
         GetWHEventsListQuery requestQuery = new GetWHEventsListQuery(
-                    request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : DateTime.MinValue,
-                    request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : DateTime.MaxValue);
+                    request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : DateTimeOffset.MinValue,
+                    request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : DateTimeOffset.MaxValue,
+                    request.Location);
 
         foreach (var el in await _mediator.Send(requestQuery))
         {
@@ -82,8 +83,9 @@ public class EventService : WHEvent.WHEventBase
     {
         var response = new WHEventsReply();
         GetWHEventsListQuery requestQuery = new GetWHEventsListQuery(
-            request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : DateTime.MinValue,
-            request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : DateTime.MaxValue);
+            request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : DateTimeOffset.MinValue,
+            request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : DateTimeOffset.MaxValue,
+            request.Location);
 
         foreach (var el in await _mediator.Send<IEnumerable<WHEventModel>>(requestQuery))
         {
