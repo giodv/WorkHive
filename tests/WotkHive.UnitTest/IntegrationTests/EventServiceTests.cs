@@ -26,17 +26,19 @@ public class EventServiceTests : IntegrationTestBase
     }
 
 
-    //[Fact]
-    //public async void CreateEventRequest()
-    //{
-    //    // Arrange
-    //    var client = new WHEvent.WHEventClient(Channel);
+    [Fact]
+    public async void GetEvents()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
 
-    //    // Act
-    //    var response = await client.CreateEventAsync(new GetE { StartDateTime = DateTime.UtcNow.Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test" });
+        // Act
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test" });
 
-    //    // Assert
-    //    Assert.Equal("test", response.Description);
-    //}
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { });
+
+        // Assert
+        Assert.Equal(2, response.Events.Count());
+    }
 
 }

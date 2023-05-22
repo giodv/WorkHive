@@ -19,6 +19,6 @@ public class GetWHEventsListQueryHandler : IRequestHandler<GetWHEventsListQuery,
 
     public async Task<IEnumerable<WHEventModel>> Handle(GetWHEventsListQuery request, CancellationToken cancellationToken)
     {
-        return await _applicationDbContext.WHEvents.Where(el => el.StartDate > DateTime.Now).Select(entity => new WHEventModel(entity)).ToListAsync();
+        return await _applicationDbContext.WHEvents.Where(el => el.StartDate > DateTime.UtcNow).Select(entity => new WHEventModel(entity)).ToListAsync();
     }
 }
