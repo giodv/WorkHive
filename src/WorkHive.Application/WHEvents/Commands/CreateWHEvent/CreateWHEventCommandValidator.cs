@@ -21,15 +21,15 @@ public class CreateWHEventCommandValidator : AbstractValidator<CreateWHEventComm
             .NotNull().WithMessage("EndDate is required.")
             .GreaterThan(v => v.StartDate).WithMessage("EndDate should be greater than StartDate");
 
-        RuleFor(v => v.OrganizerId)
-            .NotNull().NotEmpty().WithMessage("OrganizerId is required.")
-            .MustAsync(UserMustExists).WithMessage("OrganizerId must be an existing user");
+        RuleFor(v => v.OrganizationId)
+            .NotNull().NotEmpty().WithMessage("OrganizationId is required.")
+            .MustAsync(UserMustExists).WithMessage("OrganizationId must be an existing Company ");
     }
 
-    public async Task<bool> UserMustExists(Guid userId, CancellationToken cancellationToken)
+    public async Task<bool> UserMustExists(Guid companyId, CancellationToken cancellationToken)
     {
-        return await _context.WhUsers
-            .AnyAsync(u => u.Id == userId, cancellationToken);
+        return await _context.WhCompanies
+            .AnyAsync(u => u.Id == companyId, cancellationToken);
     }
 
 }
