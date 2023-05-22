@@ -1,7 +1,7 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using FluentAssertions;
+using WorkHive.Domain;
 using WotkHive.Tests.IntegrationTests.Helpers;
 using WotkHive.UnitTest.IntegrationTests;
-using WotkHive.UnitTest.IntegrationTests.Helpers;
 using Xunit.Abstractions;
 
 namespace WotkHive.Tests.IntegrationTests;
@@ -38,7 +38,7 @@ public class EventServiceTests : IntegrationTestBase
         var response = await client.GetEventsAsync(new GetEventFilterRequest { });
 
         // Assert
-        Assert.Equal(2, response.Events.Count());
+        Assert.Equal(2, response.Events.Count);
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class EventServiceTests : IntegrationTestBase
         var response = await client.GetEventsAsync(new GetEventFilterRequest { });
 
         // Assert
-        Assert.Equal(3, response.Events.Count());
+        Assert.Equal(3, response.Events.Count);
     }
 
     [Fact]
@@ -72,7 +72,7 @@ public class EventServiceTests : IntegrationTestBase
         var response = await client.GetEventsAsync(new GetEventFilterRequest { StartDateTime = DateTime.UtcNow.AddHours(-5).Ticks });
 
         // Assert
-        Assert.Equal(3, response.Events.Count());
+        Assert.Equal(3, response.Events.Count);
     }
 
     [Fact]
@@ -89,7 +89,7 @@ public class EventServiceTests : IntegrationTestBase
         var response = await client.GetEventsAsync(new GetEventFilterRequest { StartDateTime = DateTime.UtcNow.Ticks });
 
         // Assert
-        Assert.Equal(2, response.Events.Count());
+        Assert.Equal(2, response.Events.Count);
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class EventServiceTests : IntegrationTestBase
         var response = await client.GetEventsAsync(new GetEventFilterRequest { StartDateTime = DateTime.UtcNow.Ticks, EndDateTime = DateTime.UtcNow.AddHours(3).Ticks });
 
         // Assert
-        Assert.Equal(1, response.Events.Count());
+        Assert.Single(response.Events);
     }
 
     [Fact]
@@ -123,10 +123,62 @@ public class EventServiceTests : IntegrationTestBase
         var response = await client.GetEventsAsync(new GetEventFilterRequest { Location = "Nap" });
 
         // Assert
-        Assert.Equal(1, response.Events.Count());
+        Assert.Single(response.Events);
     }
 
+    [Fact]
+    public async void GetEventsWithFilter5()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
 
+        // Act
+
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan" });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test", Location = "Milan" });
+
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { Location = "Mil" });
+
+        // Assert
+        response.Events.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async void GetEventsWithFilter6()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan" });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test", Location = "Milan" });
+
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { OrganizerId = "B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95" });
+
+        // Assert
+        response.Events.Should().HaveCount(3);
+    }
+
+    [Fact]
+    public async void GetEventsWithFilter7()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Fun });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Work });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.WorkAndFun });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Online });
+        await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(3).Ticks, EndDateTime = DateTime.UtcNow.AddHours(5).Ticks, Description = "test", Location = "Milan", EventType = (int)(WHEventType.Babysitting | WHEventType.Fun) });
+
+        var response = await client.GetEventsAsync(new GetEventFilterRequest { EventType = (int)WHEventType.Fun });
+
+        // Assert
+        response.Events.Should().HaveCount(4);
+    }
 
 
 }

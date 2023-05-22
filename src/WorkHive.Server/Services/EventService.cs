@@ -51,9 +51,11 @@ public class EventService : WHEvent.WHEventBase
     public override async Task GetEventStream(GetEventFilterRequest request, IServerStreamWriter<WHEventReply> responseStream, ServerCallContext context)
     {
         GetWHEventsListQuery requestQuery = new GetWHEventsListQuery(
-                    request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : DateTimeOffset.MinValue,
-                    request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : DateTimeOffset.MaxValue,
-                    request.Location);
+            request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : DateTimeOffset.MinValue,
+            request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : DateTimeOffset.MaxValue,
+            request.Location,
+            request.HasOrganizerId ? Guid.Parse(request.OrganizerId) : null,
+            (WHEventType)request.EventType);
 
         foreach (var el in await _mediator.Send(requestQuery))
         {
@@ -81,12 +83,15 @@ public class EventService : WHEvent.WHEventBase
 
     public override async Task<WHEventsReply> GetEvents(GetEventFilterRequest request, ServerCallContext context)
     {
-        var response = new WHEventsReply();
         GetWHEventsListQuery requestQuery = new GetWHEventsListQuery(
-            request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : DateTimeOffset.MinValue,
-            request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : DateTimeOffset.MaxValue,
-            request.Location);
+            request.HasStartDateTime ? new DateTime(request.StartDateTime, DateTimeKind.Utc) : null,
+            request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : null,
+            request.Location,
+            request.HasOrganizerId ? Guid.Parse(request.OrganizerId) : null,
+            (WHEventType)request.EventType);
 
+
+        var response = new WHEventsReply();
         foreach (var el in await _mediator.Send<IEnumerable<WHEventModel>>(requestQuery))
         {
             response.Events.Add(WHEventReplyExtension.CreateFromModel(el));
