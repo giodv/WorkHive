@@ -19,7 +19,7 @@ public class EventServiceTests : IntegrationTestBase
         var client = new WHEvent.WHEventClient(Channel);
 
         // Act
-        var response = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = Timestamp.FromDateTime(DateTime.UtcNow), EndDateTime = Timestamp.FromDateTime(DateTime.UtcNow.AddHours(1)), Description = "test" });
+        var response = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test" });
 
         // Assert
         Assert.Equal("test", response.Description);

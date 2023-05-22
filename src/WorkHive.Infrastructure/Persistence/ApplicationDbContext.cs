@@ -35,12 +35,16 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             .HasMany(k => k.Guests)
             .WithMany(x => x.GuestEvents);
 
+
         builder.Entity<WHCompany>().HasMany(c => c.Users).WithOne(x => x.WhCompany).HasForeignKey(x => x.WhCompanyId);
 
         builder.Entity<WHEvent>()
             .HasOne(k => k.Owner)
             .WithMany(x => x.OwnerEvents)
             .HasForeignKey(x => x.OwnerId);
+
+        builder.Entity<WHEvent>().Navigation(e => e.Owner).AutoInclude();
+
 
         base.OnModelCreating(builder);
     }

@@ -28,7 +28,7 @@ public class EventService : WHEvent.WHEventBase
         // TODO: Get The organizer ID from the auth token
         try
         {
-            WHEventModel response = await _mediator.Send(new CreateWHEventCommand(Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95"), request.StartDateTime.ToDateTime(), request.EndDateTime.ToDateTime(), request.Location, (WHEventType)request.EventType, request.Description, request.MaxGuest));
+            WHEventModel response = await _mediator.Send(new CreateWHEventCommand(Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95"), new DateTime(request.StartDateTime), new DateTime(request.EndDateTime), request.Location, (WHEventType)request.EventType, request.Description, request.MaxGuest));
             return WHEventReplyExtension.CreateFromModel(response);
 
         }

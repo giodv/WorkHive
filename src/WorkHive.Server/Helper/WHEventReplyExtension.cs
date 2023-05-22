@@ -11,8 +11,8 @@ public static class WHEventReplyExtension
         {
             Id = model.Id.ToString(),
             Description = model.Description,
-            StartDateTime = Timestamp.FromDateTime(model.StartDate.ToUniversalTime()),
-            EndDateTime = Timestamp.FromDateTime(model.EndDate.ToUniversalTime()),
+            StartDateTime = model.StartDate.Ticks,
+            EndDateTime = model.EndDate.Ticks,
             EventType = (uint)model.EventType,
             Location = model.Location,
             MaxGuest = model.MaxGuest,

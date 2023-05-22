@@ -8,6 +8,7 @@ import "google/protobuf/wrappers.proto";
 service WHEvent {
   rpc CreateEvent (CreateEventRequest) returns (WHEventReply);
   rpc GetEventStream (GetEventFilterRequest) returns (stream WHEventReply);
+  rpc GetEventsStream (GetEventFilterRequest) returns (WHEventsReply);
   rpc GetEvent (GetEventRequest) returns (WHEventReply);
   rpc UpdateEvent (UpdateEventRequest) returns (WHEventReply);
   rpc DeleteEvent (DeleteEventRequest) returns (google.protobuf.Empty);
@@ -22,9 +23,13 @@ message JoinEventRequest{
   string id = 1;
 }
 
+message WHEventsReply{
+	repeated WHEventReply events = 1;
+}
+
 message GetEventFilterRequest {
-  optional google.protobuf.Timestamp startDateTime = 1;
-  optional google.protobuf.Timestamp endDateTime = 2;
+  optional int64 startDateTime = 1;
+  optional int64 endDateTime = 2;
   optional string location = 3;
   optional string organizerId = 4;
   uint32 eventType = 5; 
@@ -33,8 +38,8 @@ message GetEventFilterRequest {
 message WHEventReply {
   string id = 1;
   string organizerId = 2;
-  google.protobuf.Timestamp startDateTime = 3;
-  google.protobuf.Timestamp endDateTime = 4;
+  int64 startDateTime = 3;
+  int64 endDateTime = 4;
   string location = 5;
   optional google.protobuf.Int32Value maxGuest = 6;  
   string description = 7;
@@ -43,8 +48,8 @@ message WHEventReply {
 }
 
 message CreateEventRequest {
-  google.protobuf.Timestamp startDateTime = 1;
-  google.protobuf.Timestamp endDateTime = 2;
+  int64 startDateTime = 1;
+  int64 endDateTime = 2;
   string location = 3;
   uint32 eventType = 4; 
   string description = 5;
@@ -53,8 +58,8 @@ message CreateEventRequest {
 
 message UpdateEventRequest {
   string id = 1;
-  optional google.protobuf.Timestamp startDateTime = 2;
-  optional google.protobuf.Timestamp endDateTime = 3;
+  optional int64 startDateTime = 2;
+  optional int64 endDateTime = 3;
   optional string location = 4;
   uint32 eventType = 5; 
   optional string description = 8;
