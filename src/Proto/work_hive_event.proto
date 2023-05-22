@@ -8,7 +8,7 @@ import "google/protobuf/wrappers.proto";
 service WHEvent {
   rpc CreateEvent (CreateEventRequest) returns (WHEventReply);
   rpc GetEventStream (GetEventFilterRequest) returns (stream WHEventReply);
-  rpc GetEventsStream (GetEventFilterRequest) returns (WHEventsReply);
+  rpc GetEvents (GetEventFilterRequest) returns (WHEventsReply);
   rpc GetEvent (GetEventRequest) returns (WHEventReply);
   rpc UpdateEvent (UpdateEventRequest) returns (WHEventReply);
   rpc DeleteEvent (DeleteEventRequest) returns (google.protobuf.Empty);
