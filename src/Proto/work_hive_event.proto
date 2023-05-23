@@ -45,6 +45,7 @@ message WHEventReply {
   string description = 7;
   uint32 eventType = 8; 
   repeated string guestIds = 9; 
+  repeated string attributes = 10;
 }
 
 message CreateEventRequest {
@@ -54,6 +55,7 @@ message CreateEventRequest {
   uint32 eventType = 4; 
   string description = 5;
   optional int32 maxGuest = 6;  
+  repeated string attributes = 7;
 }
 
 message UpdateEventRequest {
@@ -64,6 +66,7 @@ message UpdateEventRequest {
   uint32 eventType = 5; 
   optional string description = 8;
   optional int32 maxGuest = 6;  
+  repeated string attributes = 7;
 }
 
 message DeleteEventRequest{

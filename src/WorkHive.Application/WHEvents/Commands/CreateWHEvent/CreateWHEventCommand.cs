@@ -52,7 +52,7 @@ public class CreateWHEventCommandHandler : IRequestHandler<CreateWHEventCommand,
     }
     public async Task<WHEventModel> Handle(CreateWHEventCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _applicationDbContext.WHEvents.AddAsync(request.ToEntity());
+        var entity = await _applicationDbContext.WHEvents.AddAsync(request.ToEntity(), cancellationToken);
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
