@@ -35,6 +35,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             .HasMany(k => k.Guests)
             .WithMany(x => x.GuestEvents);
 
+        builder.Entity<WHEvent>().Navigation(el => el.Guests).AutoInclude();
 
         builder.Entity<WHCompany>().HasMany(c => c.Users).WithOne(x => x.WhCompany).HasForeignKey(x => x.WhCompanyId);
 

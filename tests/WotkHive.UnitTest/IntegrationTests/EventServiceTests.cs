@@ -212,4 +212,40 @@ public class EventServiceTests : IntegrationTestBase
 
     }
 
+    [Fact]
+    public async void GetEvent1()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+        var newEvent = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Fun });
+
+        var response = await client.GetEventAsync(new GetEventRequest { Id = newEvent.Id });
+
+        // Assert
+        response.Should().NotBeNull();
+
+    }
+
+    [Fact]
+    public async void JoinEvent1()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+        var newEvent = await client.CreateEventAsync(new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Fun });
+
+        await client.JoinEventAsync(new JoinEventRequest { Id = newEvent.Id });
+        await client.JoinEventAsync(new JoinEventRequest { Id = newEvent.Id });
+
+
+        var response = await client.GetEventAsync(new GetEventRequest { Id = newEvent.Id });
+
+        // Assert
+        response.Should().NotBeNull();
+
+    }
+
 }

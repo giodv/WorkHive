@@ -29,7 +29,15 @@ public class EventService : WHEvent.WHEventBase
         // TODO: Get The organizer ID from the auth token
         try
         {
-            WHEventModel response = await _mediator.Send(new CreateWHEventCommand(Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95"), new DateTime(request.StartDateTime), new DateTime(request.EndDateTime), request.Location, (WHEventType)request.EventType, request.Description, request.MaxGuest));
+            CreateWHEventCommand createRequest = new CreateWHEventCommand(
+                Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95"), 
+                new DateTime(request.StartDateTime), 
+                new DateTime(request.EndDateTime), 
+                request.Location, 
+                (WHEventType)request.EventType, 
+                request.Description,
+                request.HasMaxGuest ? request.MaxGuest : null);
+            WHEventModel response = await _mediator.Send(createRequest);
             return WHEventReplyExtension.CreateFromModel(response);
 
         }
@@ -76,7 +84,7 @@ public class EventService : WHEvent.WHEventBase
     public override async Task<Empty> JoinEvent(JoinEventRequest request, ServerCallContext context)
     {
         //TODO: Get The guest ID from the auth token
-        await _mediator.Send(new JoinWHEventCommand(Guid.Parse(request.Id), Guid.NewGuid()));
+        await _mediator.Send(new JoinWHEventCommand(Guid.Parse(request.Id), Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95")));
 
         return new Empty();
 

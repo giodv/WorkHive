@@ -29,16 +29,18 @@ public class JoinWHEventCommandHandler : IRequestHandler<JoinWHEventCommand>
     public async Task Handle(JoinWHEventCommand request, CancellationToken cancellationToken)
     {
         var entity = await _applicationDbContext.WHEvents.SingleAsync(e => e.Id == request.Id);
+        var guestUser = await _applicationDbContext.WhUsers.SingleAsync(e => e.Id == request.GuestId);
 
-        if (entity != null)
+        if (entity != null && guestUser != null)
         {
-            if (entity.MaxGuest.HasValue && entity.MaxGuest.Value > entity.Guests.Count && !entity.Guests.Select(x => x.Id).Contains(request.GuestId))
+            if ((!entity.MaxGuest.HasValue || entity.MaxGuest.Value > entity.Guests.Count) && !entity.Guests.Select(x => x.Id).Contains(request.GuestId))
             {
-                entity.Guests.Add(new WHUser { Id = request.GuestId });
+                entity.Guests.Add(guestUser);
             }
         }
 
         _applicationDbContext.WHEvents.Update(entity);
         await _applicationDbContext.SaveChangesAsync(cancellationToken);
+
     }
 }
