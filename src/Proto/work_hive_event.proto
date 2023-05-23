@@ -13,6 +13,7 @@ service WHEvent {
   rpc UpdateEvent (UpdateEventRequest) returns (WHEventReply);
   rpc DeleteEvent (DeleteEventRequest) returns (google.protobuf.Empty);
   rpc JoinEvent (JoinEventRequest) returns (google.protobuf.Empty);
+  rpc CreateFakeEvent (CreateFakeEventRequest) returns (WHEventReply);
 }
 
 message GetEventRequest{
@@ -25,6 +26,10 @@ message JoinEventRequest{
 
 message WHEventsReply{
 	repeated WHEventReply events = 1;
+}
+
+message CreateFakeEventRequest{
+  string organizerId = 1;
 }
 
 message GetEventFilterRequest {
