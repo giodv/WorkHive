@@ -30,13 +30,45 @@ public class EventService : WHEvent.WHEventBase
         try
         {
             CreateWHEventCommand createRequest = new CreateWHEventCommand(
-                Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95"), 
-                new DateTime(request.StartDateTime), 
-                new DateTime(request.EndDateTime), 
-                request.Location, 
-                (WHEventType)request.EventType, 
+                Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E95"),
+                new DateTime(request.StartDateTime),
+                new DateTime(request.EndDateTime),
+                request.Location,
+                (WHEventType)request.EventType,
                 request.Description,
                 request.HasMaxGuest ? request.MaxGuest : null);
+            WHEventModel response = await _mediator.Send(createRequest);
+            return WHEventReplyExtension.CreateFromModel(response);
+
+        }
+        catch (ValidationException ex)
+        {
+            var metadata = new Metadata
+            {
+                { "ErrorMessage", ex.Message }
+            };
+            throw new RpcException(new Status(StatusCode.Internal, "Validation Exception"), metadata);
+        }
+    }
+
+    public override async Task<WHEventReply> CreateFakeEvent(CreateFakeEventRequest request, ServerCallContext context)
+    {
+        try
+        {
+            Guid organizerId = Guid.NewGuid();
+            if (!string.IsNullOrWhiteSpace(request.OrganizerId) || request.OrganizerId != Guid.Empty.ToString())
+            {
+                Guid.TryParse(request.OrganizerId, out organizerId);
+            }
+
+            CreateWHEventCommand createRequest = new CreateWHEventCommand(
+                organizerId,
+                DateTime.UtcNow.AddDays(1),
+                DateTime.UtcNow.AddDays(2),
+                "Milano, Via Como 75",
+                WHEventType.WorkAndFun,
+                "Test Event",
+                5);
             WHEventModel response = await _mediator.Send(createRequest);
             return WHEventReplyExtension.CreateFromModel(response);
 

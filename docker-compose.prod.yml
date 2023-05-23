@@ -1,0 +1,99 @@
+version: '3.4'
+
+services:
+  workhive.server:
+    image: edardev/workhiveserver
+    environment:
+        - ASPNETCORE_URLS=http://+:80
+    ports:
+        - "8082:80"
+    depends_on:
+        prometheus:
+            condition: service_healthy
+        grafana:
+            condition: service_healthy
+
+  postgres_image:
+      image: postgres:latest
+      ports:
+        - "5432"
+      restart: always
+      volumes:
+        - db_volume:/var/lib/postgresql/data
+        - ./dbscripts/seed.sql :/docker-entrypoint-initdb.d/seed.sql
+      environment:
+        POSTGRES_USER: "whUser"
+        POSTGRES_PASSWORD: "whPostPx"
+        POSTGRES_DB: "workhivedb"
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pgadmin/servers.json:/pgadmin4/servers.json
+
+  grafana:
+    container_name: grafana_grafprom
+    image: grafana/grafana:master
+    ports:
+      - "3000:3000"
+    volumes:
+        - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+        prometheus:
+            condition: service_healthy
+    healthcheck:
+        test: wget -q --tries=1 -O- http://grafana:3000/
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_grafprom
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    healthcheck:
+        test: wget -q --tries=1 -O- http://prometheus:9090/
+        interval: 3s
+        timeout: 3s
+        retries: 10
+        start_period: 10s
+
+  elasticsearch:
+   container_name: elasticsearch
+   image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
+   ports:
+    - 9200:9200
+   volumes:
+    - elasticsearch-data:/usr/share/elasticsearch/data
+   environment:
+    - xpack.monitoring.enabled=true
+    - xpack.watcher.enabled=false
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    - discovery.type=single-node
+
+  kibana:
+   container_name: kibana
+   image: docker.elastic.co/kibana/kibana:7.9.2
+   ports:
+    - 5601:5601
+   depends_on:
+    - elasticsearch
+   environment:
+    - ELASTICSEARCH_URL=http://kibana:9200
+      
+volumes:
+  db_volume:
+  elasticsearch-data:
