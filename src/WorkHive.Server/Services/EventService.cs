@@ -36,7 +36,8 @@ public class EventService : WHEvent.WHEventBase
                 request.Location,
                 (WHEventType)request.EventType,
                 request.Description,
-                request.HasMaxGuest ? request.MaxGuest : null);
+                request.HasMaxGuest ? request.MaxGuest : null,
+                request.Attributes.ToList());
             WHEventModel response = await _mediator.Send(createRequest);
             return WHEventReplyExtension.CreateFromModel(response);
 
@@ -69,7 +70,8 @@ public class EventService : WHEvent.WHEventBase
                 "Milano, Via Como 75",
                 WHEventType.WorkAndFun,
                 "Test Event",
-                5);
+                5,
+                new List<string> { "Area Fumatori", "Wifi gratuito", "Pranzo di lavoro" });
             WHEventModel response = await _mediator.Send(createRequest);
             return WHEventReplyExtension.CreateFromModel(response);
 
@@ -153,6 +155,7 @@ public class EventService : WHEvent.WHEventBase
             EndDate = request.HasEndDateTime ? new DateTime(request.EndDateTime, DateTimeKind.Utc) : null,
             EventType = request.EventType != 0 ? (WHEventType)request.EventType : null,
             MaxGuest = request.HasMaxGuest ? request.MaxGuest : null,
+            LocationAttributes = request.Attributes.ToList()
         };
 
 

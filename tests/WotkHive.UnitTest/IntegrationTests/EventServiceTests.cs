@@ -213,6 +213,30 @@ public class EventServiceTests : IntegrationTestBase
     }
 
     [Fact]
+    public async void UpdateEvent3()
+    {
+        // Arrange
+        var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+        CreateEventRequest createRequest = new CreateEventRequest { StartDateTime = DateTime.UtcNow.AddHours(-1).Ticks, EndDateTime = DateTime.UtcNow.AddHours(1).Ticks, Description = "test", Location = "Milan", EventType = (int)WHEventType.Fun };
+        createRequest.Attributes.Add("Area Fumatori");
+        var newEvent = await client.CreateEventAsync(createRequest);
+
+        UpdateEventRequest request = new UpdateEventRequest { Id = newEvent.Id, Description = "updatedDesc2", EventType = (int)WHEventType.Babysitting };
+        request.Attributes.Add("Area Non Fumatori");
+        var response = await client.UpdateEventAsync(request);
+
+        // Assert
+        response.Description.Should().Be("updatedDesc2");
+        response.EventType.Should().Be((int)WHEventType.Babysitting);
+        response.Attributes.Should().HaveCount(1);
+        response.Attributes.ElementAt(0).Should().Be("Area Non Fumatori");
+
+    }
+
+
+    [Fact]
     public async void GetEvent1()
     {
         // Arrange
@@ -262,6 +286,7 @@ public class EventServiceTests : IntegrationTestBase
         // Assert
         response.Should().NotBeNull();
 
+        response.Attributes.Should().NotBeNull().And.HaveCount(3);
     }
 
 }

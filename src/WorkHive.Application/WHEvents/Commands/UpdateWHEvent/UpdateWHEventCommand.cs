@@ -13,6 +13,8 @@ public record UpdateWHEventCommand : IRequest<WHEventModel>
     public WHEventType? EventType { get; init; }
     public string? Description { get; init; }
     public int? MaxGuest { get; init; }
+    public List<string> LocationAttributes { get; init; }
+
 
     public UpdateWHEventCommand(Guid id)
     {
@@ -56,6 +58,14 @@ public class UpdateWHEventCommandHandler : IRequestHandler<UpdateWHEventCommand,
         if (request.EventType.HasValue)
         {
             entity.EventAttributes = request.EventType.Value;
+        }
+        if(request.LocationAttributes != null && request.LocationAttributes.Any())
+        {
+            entity.LocationAttributes.Clear();
+            foreach (var locationAttribute in request.LocationAttributes)
+            {
+                entity.LocationAttributes.Add(locationAttribute);
+            }
         }
 
         await _context.SaveChangesAsync(cancellationToken);
