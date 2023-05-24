@@ -248,4 +248,20 @@ public class EventServiceTests : IntegrationTestBase
 
     }
 
+    [Fact]
+    public async void CreateFakeEvent1()
+    {
+        // Arrange
+       var client = new WHEvent.WHEventClient(Channel);
+
+        // Act
+        var newEvent = await client.CreateFakeEventAsync(new CreateFakeEventRequest() );
+
+        var response = await client.GetEventAsync(new GetEventRequest { Id = newEvent.Id });
+
+        // Assert
+        response.Should().NotBeNull();
+
+    }
+
 }

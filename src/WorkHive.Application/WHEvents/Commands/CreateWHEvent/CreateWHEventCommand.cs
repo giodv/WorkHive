@@ -52,6 +52,11 @@ public class CreateWHEventCommandHandler : IRequestHandler<CreateWHEventCommand,
     }
     public async Task<WHEventModel> Handle(CreateWHEventCommand request, CancellationToken cancellationToken)
     {
+        if (!_applicationDbContext.WhUsers.Any(e => e.Id == request.OrganizerId))
+        {
+            await _applicationDbContext.WhUsers.AddAsync(new WHUser() { Id = request.OrganizerId, WhCompanyId = Guid.Parse("B4B117AA-3AD8-4D13-802A-B8BAD0DC8E94") });
+        }
+
         var entity = await _applicationDbContext.WHEvents.AddAsync(request.ToEntity(), cancellationToken);
 
         await _applicationDbContext.SaveChangesAsync(cancellationToken);

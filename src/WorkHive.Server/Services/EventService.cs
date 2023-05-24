@@ -55,8 +55,9 @@ public class EventService : WHEvent.WHEventBase
     {
         try
         {
+            // create new user beforehand
             Guid organizerId = Guid.NewGuid();
-            if (!string.IsNullOrWhiteSpace(request.OrganizerId) || request.OrganizerId != Guid.Empty.ToString())
+            if (!string.IsNullOrWhiteSpace(request.OrganizerId) && request.OrganizerId != Guid.Empty.ToString())
             {
                 Guid.TryParse(request.OrganizerId, out organizerId);
             }
