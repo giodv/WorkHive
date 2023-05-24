@@ -15,7 +15,7 @@ public static class WHEventReplyExtension
             EndDateTime = model.EndDate.Ticks,
             EventType = (uint)model.EventType,
             Location = model.Location,
-            MaxGuest = model.MaxGuest,
+            MaxGuest = model.MaxGuest.HasValue ? model.MaxGuest.Value : 0,
             OrganizerId = model.OrganizerId.ToString(),
         };
         foreach (var gid in model.GuestIds)
