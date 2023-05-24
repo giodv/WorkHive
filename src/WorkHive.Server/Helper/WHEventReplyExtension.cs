@@ -7,12 +7,15 @@ public static class WHEventReplyExtension
 {
     public static WHEventReply CreateFromModel(WHEventModel model)
     {
+        var startDateTimeOffset = new DateTimeOffset(model.StartDate, TimeSpan.Zero);
+        var endDateTimeOffset = new DateTimeOffset(model.EndDate, TimeSpan.Zero);
+        
         var reply = new WHEventReply
         {
             Id = model.Id.ToString(),
             Description = model.Description,
-            StartDateTime = model.StartDate.Ticks,
-            EndDateTime = model.EndDate.Ticks,
+            StartDateTime = startDateTimeOffset.ToUnixTimeSeconds(),
+            EndDateTime = endDateTimeOffset.ToUnixTimeSeconds(),
             EventType = (uint)model.EventType,
             Location = model.Location,
             MaxGuest = model.MaxGuest.HasValue ? model.MaxGuest.Value : 0,
